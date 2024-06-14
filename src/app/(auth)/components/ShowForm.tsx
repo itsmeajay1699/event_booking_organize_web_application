@@ -5,7 +5,7 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
 const ShowForm = () => {
-  const [islogin, setIsLogin] = useState<boolean>(false);
+  const [islogin, setIsLogin] = useState<boolean>(true);
 
   return (
     <>

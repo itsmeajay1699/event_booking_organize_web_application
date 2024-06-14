@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, useState } from "react";
-
+import { signIn, signOut } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -36,7 +36,12 @@ const LoginForm = ({
   });
 
   function onSubmit(values: z.infer<typeof loginForm>) {
-    console.log(values);
+
+    signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      callbackUrl: "/",
+    });
   }
 
   return (
@@ -98,6 +103,13 @@ const LoginForm = ({
               Register
             </button>
           </span>
+          <button
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign Out
+          </button>
         </Form>
       </div>
     </div>

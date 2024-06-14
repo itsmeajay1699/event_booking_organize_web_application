@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import NextAuthProvider from "@/provider/next_auth";
 
 export const metadata: Metadata = {
   title: "Event Booking",
@@ -15,7 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="h-full flex flex-col">{children}</body>
+      <body className="h-full flex flex-col">
+        <NextAuthProvider>{children}</NextAuthProvider>
+      </body>
     </html>
   );
 }

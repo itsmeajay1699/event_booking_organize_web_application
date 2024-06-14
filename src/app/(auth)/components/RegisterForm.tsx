@@ -45,11 +45,21 @@ const RegisterForm = ({
     },
   });
 
-  function onSubmit(values: z.infer<typeof RegisterFrom>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof RegisterFrom>) {
+    try {
+      const res = await fetch("/sign-up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
-    // 0 -> user
-    // 1 -> organizer
+      const data = await res.json();
+
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
