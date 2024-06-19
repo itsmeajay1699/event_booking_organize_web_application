@@ -57,3 +57,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.left_sidebar {
+  @apply sticky left-0 top-0 bottom-0 h-full flex w-fit flex-col  justify-between  border-none   max-md:hidden lg:w-[250px];
+}

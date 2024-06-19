@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { redirect } from "next/navigation";
 
 const RegisterFrom = z.object({
   email: z.string().email(),
@@ -57,8 +58,13 @@ const RegisterForm = ({
 
       const data = await res.json();
 
+      if (data.user.role) {
+        redirect("/organizer");
+      } else {
+        redirect("/");
+      }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

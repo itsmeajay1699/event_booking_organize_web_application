@@ -4,11 +4,8 @@ import FacebookProvider from "next-auth/providers/facebook";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/db";
-const authOptions: AuthOptions = {
-  session: {
-    strategy: "jwt",
-  },
 
+const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -26,8 +23,6 @@ const authOptions: AuthOptions = {
             email: email,
           },
         });
-
-        console.log(user, "user");
 
         if (user && user.password === password) {
           return user;
@@ -47,22 +42,46 @@ const authOptions: AuthOptions = {
   ],
 
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log(account?.provider, "account");
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   console.log(account?.provider, "account");
 
-      if (account?.provider === "google") {
-        if (user?.role) {
-          return "/select-page";
-        }
-      }
+    //   if (account?.provider === "google") {
+    //     if (user?.role) {
+    //       return "/select-role";
+    //     }
+    //   }
 
-      const isAllowedToSignIn = true;
-      if (isAllowedToSignIn) {
-        return true;
-      } else {
-        return false;
+    //   const isAllowedToSignIn = true;
+    //   if (isAllowedToSignIn) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // },
+
+    async jwt({ token, user }) {
+      if (user?.id) {
+        token._id = user.id;
+        token.role = user?.role as number;
       }
+      return token;
     },
+    async session({ session, token, user }) {
+      // user id is stored in ._id when using credentials provider
+      if (token?._id) session.user.id = token._id as string;
+      if (token?.role) session.user.role = token.role as number;
+
+      // user id is stored sub ._id when using google provider
+      // if (token?.sub) session.user._id = token.sub;
+
+      // we'll update the session object with those
+      // informations besides the ones it already has
+      return session;
+    },
+  },
+  secret: process.env.NEXT_AUTH_SECRET,
+  session: {
+    strategy: "jwt",
   },
 };
 

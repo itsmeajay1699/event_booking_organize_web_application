@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import NextAuthProvider from "@/provider/next_auth";
+import LeftSidebar from "@/components/LeftSidebar";
+import { Provider } from "@/context/Context";
+import ShowSidebar from "@/components/ShowSidebar";
 
 export const metadata: Metadata = {
   title: "Event Booking",
@@ -16,8 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="h-full flex flex-col">
-        <NextAuthProvider>{children}</NextAuthProvider>
+      <body className="h-full flex flex-col bg-gray-200">
+        <NextAuthProvider>
+          <Provider>
+            <main className="">{children}</main>
+          </Provider>
+        </NextAuthProvider>
       </body>
     </html>
   );

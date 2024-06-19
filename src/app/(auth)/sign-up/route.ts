@@ -11,6 +11,7 @@ export async function POST(request: Request) {
         username: res.username,
         email: res.email,
         password: res.password,
+        role: res.role ? 1 : 0,
       },
     });
 
